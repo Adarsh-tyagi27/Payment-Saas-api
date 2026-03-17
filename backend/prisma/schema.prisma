@@ -1,0 +1,110 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                 String         @id @default(cuid())
+  email              String         @unique
+  passwordHash       String
+  role               Role           @default(USER)
+  razorpayCustomerId String?        @unique
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  subscription     Subscription?
+  invoices         Invoice[]
+  refreshTokens    RefreshToken[]
+}
+
+model Plan {
+  id             String          @id @default(cuid())
+  name           String          @unique   // "free" | "pro" | "enterprise"
+  displayName    String
+  razorpayPlanId String?         @unique   // For subscription plans
+  price          Decimal                   // In paise (e.g. 49900 = 499 INR)
+  interval       BillingInterval
+  features       Json                      // { "api_calls": 1000, "seats": 5 }
+  isActive       Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                     String             @id @default(cuid())
+  userId                 String             @unique
+  planId                 String
+  razorpaySubscriptionId String?            @unique
+  status                 SubscriptionStatus
+  currentPeriodStart     DateTime
+  currentPeriodEnd       DateTime
+  cancelAtPeriodEnd      Boolean            @default(false)
+  canceledAt             DateTime?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id])
+}
+
+model Invoice {
+  id                String        @id @default(cuid())
+  userId            String
+  razorpayPaymentId String        @unique
+  razorpayOrderId   String
+  amount            Decimal                 // In paise
+  currency          String        @default("INR")
+  status            InvoiceStatus
+  description       String?
+  createdAt         DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model IdempotencyKey {
+  id         String   @id @default(cuid())
+  key        String   @unique
+  response   Json
+  statusCode Int
+  createdAt  DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BillingInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+  FREE
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
