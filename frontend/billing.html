@@ -1,0 +1,53 @@
+<!-- frontend/billing.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing History — PaySaaS</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">PaySaaS</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="billing.html" style="color:var(--text-primary)">Invoices</a>
+      <button onclick="logout()" class="btn btn-secondary">Logout</button>
+    </div>
+  </nav>
+
+  <div style="max-width: 1000px; width: 90%; margin: 4rem auto;" class="dashboard-card">
+    <h2 style="margin-bottom: 0.5rem;">Billing History</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Review and check statuses of your historic receipts.</p>
+
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Payment ID</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="invoice-tbody">
+          <tr>
+            <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 2rem;">Loading billing history...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/billing.js"></script>
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

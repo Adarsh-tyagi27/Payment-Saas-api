@@ -1,0 +1,70 @@
+<!-- frontend/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — PaySaaS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Razorpay Standard Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <nav>
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">PaySaaS</div>
+    <div class="nav-links">
+      <a href="dashboard.html" style="color:var(--text-primary)">Dashboard</a>
+      <a href="billing.html">Invoices</a>
+      <button onclick="logout()" class="btn btn-secondary">Logout</button>
+    </div>
+  </nav>
+
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <h2 style="margin-bottom: 1.5rem;">Billing Overview</h2>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Current Plan</p>
+          <h3 id="plan-display-name" style="font-size: 2.25rem; font-weight: 800;">Loading...</h3>
+          <p id="billing-cycle" style="color: var(--text-secondary); margin-top: 0.25rem; font-size: 0.95rem;">Active since ...</p>
+        </div>
+        <div id="sub-action-container">
+          <!-- Buttons dynamically render here -->
+        </div>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+
+      <h3>API Endpoint Usage</h3>
+      <div style="margin-top: 1rem;">
+        <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+          <span id="usage-text">0 / 0 calls used</span>
+          <span id="usage-percent">0%</span>
+        </div>
+        <div class="usage-bar-bg">
+          <div class="usage-bar-fill" id="usage-bar" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-card" id="pricing-sidebar" style="display: none;">
+      <h3 style="margin-bottom: 1rem;">Manage Subscription</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">Upgrade to access more usage limits and advanced options.</p>
+      
+      <div id="available-upgrades">
+        <!-- Dynamic upgrade options -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

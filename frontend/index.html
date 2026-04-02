@@ -1,0 +1,84 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PaySaaS — Modern Subscriptions</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logo">PaySaaS</div>
+    <div class="nav-links" id="nav-links">
+      <a href="#pricing">Pricing</a>
+      <a href="login.html" class="btn btn-secondary">Login</a>
+      <a href="login.html?register=true" class="btn">Register</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Supercharge your product with modern API billing</h1>
+    <p>A production-ready multi-tenant SaaS subscription billing engine. Integrated with Razorpay.</p>
+    <a href="#pricing" class="btn">View Plans & Pricing</a>
+  </section>
+
+  <section class="pricing-section" id="pricing">
+    <div class="pricing-grid" id="pricing-grid">
+      <!-- Dynamically filled from API -->
+      <div class="pricing-card">
+        <div class="plan-name">Free Tier</div>
+        <div class="plan-price">₹0<span>/month</span></div>
+        <ul class="plan-features">
+          <li>100 API Calls / Month</li>
+          <li>1 Seat</li>
+          <li>Basic Metrics</li>
+        </ul>
+        <a href="login.html?register=true" class="btn btn-secondary">Get Started</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="plan-name">Pro Plan</div>
+        <div class="plan-price">₹499<span>/month</span></div>
+        <ul class="plan-features">
+          <li>10,000 API Calls / Month</li>
+          <li>5 Seats</li>
+          <li>Advance Usage Dashboard</li>
+          <li>Priority Support</li>
+        </ul>
+        <a href="login.html?register=true" class="btn">Subscribe Pro</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="plan-name">Enterprise Tier</div>
+        <div class="plan-price">₹1,999<span>/month</span></div>
+        <ul class="plan-features">
+          <li>1,000,000 API Calls / Month</li>
+          <li>50 Seats</li>
+          <li>Custom Usage limits</li>
+          <li>24/7 SLA Support</li>
+        </ul>
+        <a href="login.html?register=true" class="btn btn-secondary">Go Enterprise</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/api.js"></script>
+  <script>
+    // Update navigation based on auth status
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      document.getElementById('nav-links').innerHTML = `
+        <a href="dashboard.html">Dashboard</a>
+        <a href="billing.html">Invoices</a>
+        <button onclick="logout()" class="btn btn-secondary">Logout</button>
+      `;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
